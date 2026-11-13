@@ -32,8 +32,6 @@ aside h3:first-child{margin-top:4px}
 .it.on i{background:var(--accent);color:var(--dark)}
 main{position:relative;background:#000}
 iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-.ext{position:absolute;right:14px;bottom:14px;background:rgba(30,20,16,.9);border:1px solid var(--line);border-radius:999px;padding:9px 16px;font-size:14px;font-weight:700;color:var(--light)}
-.ext:hover{border-color:var(--accent)}
 @media(max-width:800px){#tour{grid-template-columns:1fr;grid-template-rows:auto 34vh 1fr}}
 </style>
 </head>
@@ -55,27 +53,22 @@ iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
   <aside id="list"></aside>
   <main>
     <iframe id="frame" allowfullscreen allow="fullscreen; gyroscope; accelerometer" title="Ақыртас 360°"></iframe>
-    <a class="ext" id="ext" target="akyrtas_tour" rel="noopener">Ашылмаса: жаңа бетте ашу ↗</a>
   </main>
 </section>
 
 <script>
-const M='https://ezhelgi-taraz.kz/virtual-tours/akirtas/index.html?s=pano';
 const G=(id,lat,lng,h)=>'https://www.google.com/maps/embed?pb=!4v1!6m8!1m7!1s'+id+'!2m2!1d'+lat+'!2d'+lng+'!3f'+h+'!4f0!5f0.78';
 const Z=[
- ['360° КӨРІНІСТЕР (GOOGLE)',[
+ ['360° КӨРІНІСТЕР',[
   ['Сарайдың орны',G('CAoSF0NJSE0wb2dLRUlDQWdJRHlxTXlPa2dF',42.9532773,71.8026514,49)],
   ['Алып тастар мен таулар',G('CAoSFkNJSE0wb2dLRUlDQWdJRGF1b1hkVVE',42.9532533,71.802695,340)],
-  ['Ақыртас жоғарыдан',G('CAoSF0NJSE0wb2dLRUlDQWdJQzAzZHlMMVFF',42.953277,71.8026518,240)]]],
- ['МҰРАЖАЙ',[['Тұрақ',M+425],['Мұражайдың кіреберісі',M+427],['Конференц-зал',M+432],['Мұражай, 2-қабат',M+435]]],
- ['САРАЙДЫҢ ОРНЫ',[['Сарайға апаратын жол',M+445],['Жол, 2-бөлік',M+449],['Сарай аумағы 1',M+453],['Сарай аумағы 2',M+457],['Сарайдың орны',M+467],['Сарай аумағы 3',M+472],['Сарай аумағы 4',M+475],['Сарай аумағы 5',M+480],['Алып тастар',M+483],['Сарай аумағы 6',M+500],['Сарай аумағы 7',M+505],['Сарай аумағы 8',M+508],['Сарай аумағы 9',M+512]]],
- ['ҚАЗБА ЖӘНЕ ТАС АЛЫНҒАН ЖЕР',[['Тас алынған жер',M+530],['Сарайдың кіреберісі',M+534],['Қазба орны 1',M+543],['Қазба орны 2',M+545],['Казарма 1',M+557],['Казарма 2',M+562]]]
+  ['Ақыртас жоғарыдан',G('CAoSF0NJSE0wb2dLRUlDQWdJQzAzZHlMMVFF',42.953277,71.8026518,240)]]]
 ];
 const P=[],$=id=>document.getElementById(id),btns=[];
 Z.forEach(([zn,items])=>{const h=document.createElement('h3');h.textContent=zn;$('list').appendChild(h);
  items.forEach(([n,u])=>{const i=P.length;P.push({n,u});const b=document.createElement('button');b.className='it';b.innerHTML='<i>'+(i+1)+'</i>'+n;b.onclick=()=>go(i);$('list').appendChild(b);btns.push(b)})});
 let cur=-1;
-function go(i){cur=i;const p=P[i];$('frame').src=p.u;$('ext').href=p.u;$('title').textContent=p.n;$('num').textContent=(i+1)+' / '+P.length;
+function go(i){cur=i;const p=P[i];$('frame').src=p.u;$('title').textContent=p.n;$('num').textContent=(i+1)+' / '+P.length;
  btns.forEach((b,k)=>b.classList.toggle('on',k===i));btns[i].scrollIntoView({block:'nearest'});
  $('prev').disabled=i===0;$('next').disabled=i===P.length-1}
 $('goBtn').onclick=()=>{$('start').style.display='none';$('tour').style.display='grid';if(cur<0)go(0)};
