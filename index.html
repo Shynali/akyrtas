@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ақыртас: виртуалды саяхат</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pannellum/2.5.6/pannellum.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pannellum/2.5.6/pannellum.js"></script>
 <style>
 :root{--dark:#1E1410;--card:#33241D;--light:#F4EDE4;--soft:#D9CBBE;--muted:#A8968A;--accent:#E9875A;--line:rgba(244,237,228,.14)}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -33,7 +35,13 @@ aside h3:first-child{margin-top:4px}
 .it.on{background:rgba(233,135,90,.15);border-color:var(--accent);color:var(--light);font-weight:700}
 .it.on i{background:var(--accent);color:var(--dark)}
 main{position:relative;background:#000}
-iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+iframe,#pano{position:absolute;inset:0;width:100%;height:100%;border:0}
+#pano{display:none}
+.go2{width:46px;height:46px;border-radius:50%;background:rgba(233,135,90,.92);border:3px solid #fff;box-shadow:0 0 0 0 rgba(233,135,90,.6);animation:pulse 2s infinite;cursor:pointer}
+.go2:after{content:'↑';display:block;text-align:center;color:#fff;font:900 24px/40px Arial}
+.go2 span{visibility:hidden;position:absolute;bottom:56px;left:50%;transform:translateX(-50%);white-space:nowrap;background:rgba(30,20,16,.9);color:#fff;padding:6px 12px;border-radius:8px;font:700 14px 'Segoe UI',Arial,sans-serif}
+.go2:hover span{visibility:visible}
+#src{position:absolute;left:10px;bottom:8px;z-index:5;font-size:11px;color:rgba(255,255,255,.75);background:rgba(0,0,0,.45);padding:3px 8px;border-radius:6px;display:none}
 @media(max-width:800px){#tour{grid-template-columns:1fr;grid-template-rows:auto 34vh 1fr}}
 </style>
 </head>
@@ -55,6 +63,8 @@ iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
   <aside id="list"></aside>
   <main>
     <iframe id="frame" allowfullscreen allow="fullscreen; gyroscope; accelerometer" title="Ақыртас 360°"></iframe>
+    <div id="pano"></div>
+    <div id="src">Дереккөз: «Ежелгі Тараз» музей-қорығы, рұқсатымен</div>
   </main>
 </section>
 
@@ -64,13 +74,25 @@ const Z=[
  ['360° КӨРІНІСТЕР',[
   ['Сарайдың орны',G('CAoSF0NJSE0wb2dLRUlDQWdJRHlxTXlPa2dF',42.9532773,71.8026514,49)],
   ['Алып тастар мен таулар',G('CAoSFkNJSE0wb2dLRUlDQWdJRGF1b1hkVVE',42.9532533,71.802695,340)],
-  ['Ақыртас жоғарыдан',G('CAoSF0NJSE0wb2dLRUlDQWdJQzAzZHlMMVFF',42.953277,71.8026518,240)]]]
+  ['Ақыртас жоғарыдан',G('CAoSF0NJSE0wb2dLRUlDQWdJQzAzZHlMMVFF',42.953277,71.8026518,240)]]],
+ ['МҰРАЖАЙ',[
+  ['Мұражай залы',{dir:'m435',yaw:0,lim:{minYaw:-80,maxYaw:80,minPitch:-40,maxPitch:40},hs:[{yaw:-72,pitch:-7,to:4,t:'Конференц-залға өту'}]}],
+  ['Конференц-зал',{dir:'m432',yaw:0,hs:[{yaw:-34,pitch:2,to:3,t:'Мұражай залына өту'}]}]]]
 ];
+let viewer=null;
+function showPano(c){
+ if(viewer){viewer.destroy();viewer=null}
+ const f=c.dir+'/';
+ const cfg=Object.assign({type:'cubemap',cubeMap:[f+'0.jpg',f+'1.jpg',f+'2.jpg',f+'3.jpg',f+'4.jpg',f+'5.jpg'],autoLoad:true,yaw:c.yaw,hfov:95,minHfov:40,maxHfov:110,showControls:true,compass:false,
+  hotSpots:c.hs.map(h=>({yaw:h.yaw,pitch:h.pitch,cssClass:'go2',createTooltipFunc:(d,t)=>{const sp=document.createElement('span');sp.textContent=t;d.appendChild(sp)},createTooltipArgs:h.t,clickHandlerFunc:()=>go(h.to)}))},c.lim||{});
+ viewer=pannellum.viewer('pano',cfg)}
 const P=[],$=id=>document.getElementById(id),btns=[];
 Z.forEach(([zn,items])=>{const h=document.createElement('h3');h.textContent=zn;$('list').appendChild(h);
  items.forEach(([n,u])=>{const i=P.length;P.push({n,u});const b=document.createElement('button');b.className='it';b.innerHTML='<i>'+(i+1)+'</i>'+n;b.onclick=()=>go(i);$('list').appendChild(b);btns.push(b);const q=document.createElement('div');q.className='iqr';q.innerHTML='<img src="qr'+(i+1)+'.png" alt="'+n+' QR-коды"><span>Телефоннан ашу</span>';$('list').appendChild(q)})});
 let cur=-1;
-function go(i){cur=i;const p=P[i];$('frame').src=p.u;try{history.replaceState(null,'','#'+(i+1))}catch(e){}$('title').textContent=p.n;$('num').textContent=(i+1)+' / '+P.length;
+function go(i){cur=i;const p=P[i];const isP=typeof p.u!=='string';
+ $('frame').style.display=isP?'none':'block';$('pano').style.display=isP?'block':'none';$('src').style.display=isP?'block':'none';
+ if(isP){$('frame').src='about:blank';showPano(p.u)}else{if(viewer){viewer.destroy();viewer=null}$('frame').src=p.u}try{history.replaceState(null,'','#'+(i+1))}catch(e){}$('title').textContent=p.n;$('num').textContent=(i+1)+' / '+P.length;
  btns.forEach((b,k)=>b.classList.toggle('on',k===i));btns[i].scrollIntoView({block:'nearest'});
  $('prev').disabled=i===0;$('next').disabled=i===P.length-1}
 $('goBtn').onclick=()=>{$('start').style.display='none';$('tour').style.display='grid';if(cur<0)go(0)};
