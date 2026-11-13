@@ -27,9 +27,8 @@ header .t small{display:block;font-size:11px;letter-spacing:.2em;color:var(--acc
 aside{overflow-y:auto;border-right:1px solid var(--line);padding:10px}
 aside h3{font-size:11px;letter-spacing:.2em;color:var(--accent);margin:16px 6px 8px}
 aside h3:first-child{margin-top:4px}
-.pqr{margin:22px 6px 6px;padding:14px;border:1px solid var(--line);border-radius:16px;text-align:center;color:var(--muted);font-size:13px;line-height:1.4}
-.pqr img{width:150px;height:150px;border-radius:10px;display:block;margin:0 auto 8px}
-.pqr b{display:block;color:var(--light);font-size:14px;margin-bottom:2px}
+.iqr{display:flex;align-items:center;gap:12px;margin:4px 6px 14px 46px;color:var(--muted);font-size:12px}
+.iqr img{width:96px;height:96px;border-radius:8px}
 .it{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:1px solid transparent;color:var(--soft);padding:8px 10px;border-radius:12px;cursor:pointer;font:15px 'Segoe UI',Arial,sans-serif}
 .it:hover{background:rgba(244,237,228,.06);color:var(--light)}
 .it i{font-style:normal;flex:none;width:26px;height:26px;border-radius:50%;background:rgba(244,237,228,.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
@@ -72,10 +71,9 @@ const Z=[
 ];
 const P=[],$=id=>document.getElementById(id),btns=[];
 Z.forEach(([zn,items])=>{const h=document.createElement('h3');h.textContent=zn;$('list').appendChild(h);
- items.forEach(([n,u])=>{const i=P.length;P.push({n,u});const b=document.createElement('button');b.className='it';b.innerHTML='<i>'+(i+1)+'</i>'+n;b.onclick=()=>go(i);$('list').appendChild(b);btns.push(b)})});
-const q=document.createElement('div');q.className='pqr';q.innerHTML='<img id="pqrImg" alt="Осы орынның QR-коды"><b id="pqrName"></b>Осы орынды телефоннан ашу';$('list').appendChild(q);
+ items.forEach(([n,u])=>{const i=P.length;P.push({n,u});const b=document.createElement('button');b.className='it';b.innerHTML='<i>'+(i+1)+'</i>'+n;b.onclick=()=>go(i);$('list').appendChild(b);btns.push(b);const q=document.createElement('div');q.className='iqr';q.innerHTML='<img src="qr'+(i+1)+'.png" alt="'+n+' QR-коды"><span>Телефоннан ашу</span>';$('list').appendChild(q)})});
 let cur=-1;
-function go(i){cur=i;const p=P[i];$('frame').src=p.u;$('pqrImg').src='qr'+(i+1)+'.png';$('pqrName').textContent=p.n;try{history.replaceState(null,'','#'+(i+1))}catch(e){}$('title').textContent=p.n;$('num').textContent=(i+1)+' / '+P.length;
+function go(i){cur=i;const p=P[i];$('frame').src=p.u;try{history.replaceState(null,'','#'+(i+1))}catch(e){}$('title').textContent=p.n;$('num').textContent=(i+1)+' / '+P.length;
  btns.forEach((b,k)=>b.classList.toggle('on',k===i));btns[i].scrollIntoView({block:'nearest'});
  $('prev').disabled=i===0;$('next').disabled=i===P.length-1}
 $('goBtn').onclick=()=>{$('start').style.display='none';$('tour').style.display='grid';if(cur<0)go(0)};
