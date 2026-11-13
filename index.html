@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ақыртас: виртуалды саяхат</title>
+<style>
+:root{--dark:#1E1410;--card:#33241D;--light:#F4EDE4;--soft:#D9CBBE;--muted:#A8968A;--accent:#E9875A;--line:rgba(244,237,228,.14)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:#1E1410}
+html,body{min-height:100%}
+body{background:radial-gradient(ellipse at 50% 0%,#3a2519 0%,var(--dark) 60%);background-attachment:fixed;color:var(--light);font-family:'Segoe UI',Arial,sans-serif;min-height:100vh}
+a{color:inherit;text-decoration:none}
+
+/* start screen */
+#start{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;gap:18px}
+#start small{font-size:14px;font-weight:700;letter-spacing:.3em;color:var(--accent)}
+#start h1{font-size:clamp(48px,10vw,110px);font-weight:900;line-height:1}
+#start p{font-size:clamp(20px,3vw,28px);color:var(--soft)}
+.go{margin-top:22px;background:var(--accent);color:var(--dark);border:none;border-radius:999px;padding:20px 64px;font:800 26px 'Segoe UI',Arial,sans-serif;cursor:pointer;box-shadow:0 0 0 0 rgba(233,135,90,.6);animation:pulse 2.2s infinite;transition:transform .2s}
+.go:hover{transform:scale(1.04)}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(233,135,90,.55)}70%{box-shadow:0 0 0 26px rgba(233,135,90,0)}100%{box-shadow:0 0 0 0 rgba(233,135,90,0)}}
+
+/* places screen */
+#places{display:none;max-width:1100px;margin:0 auto;padding:28px 20px 50px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
+.top h2{font-size:clamp(26px,4vw,38px);font-weight:900}
+.back{border:1px solid rgba(244,237,228,.3);border-radius:999px;padding:9px 18px;font-weight:700;font-size:14px;background:none;color:var(--light);cursor:pointer}
+.hint{color:var(--muted);font-size:15px;margin-bottom:22px}
+.zone{margin-top:26px}
+.zone h3{font-size:13px;font-weight:800;letter-spacing:.2em;color:var(--accent);margin-bottom:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.place{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;transition:border-color .2s,transform .2s;opacity:0;transform:translateY(12px);animation:in .4s forwards}
+.place:hover{border-color:var(--accent);transform:translateY(-2px)}
+.place i{flex:none;width:38px;height:38px;border-radius:50%;background:rgba(233,135,90,.18);color:var(--accent);display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:800;font-size:15px}
+.place span{font-size:17px;font-weight:700;line-height:1.25}
+.place em{margin-left:auto;font-style:normal;color:var(--muted);font-size:18px}
+@keyframes in{to{opacity:1;transform:none}}
+footer{margin-top:36px;text-align:center;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+
+<section id="start">
+  <small>АҚЫРТАС</small>
+  <h1>Виртуалды саяхат</h1>
+  <p>Көне сарайды 360° аралап көріңіз</p>
+  <button class="go" id="goBtn">Бастау</button>
+</section>
+
+<section id="places">
+  <div class="top"><h2>Орынды таңдаңыз</h2><button class="back" id="backBtn">← Басына</button></div>
+  <p class="hint">Орынды басқанда 360° тур сол жерден ашылады.</p>
+  <div id="zones"></div>
+  <footer>360° тур: «Ежелгі Тараз ескерткіштері» мемлекеттік тарихи-мәдени музей-қорығы</footer>
+</section>
+
+<script>
+const BASE='https://ezhelgi-taraz.kz/virtual-tours/akirtas/index.html?s=pano';
+const Z=[
+ ['МҰРАЖАЙ',[['425','Тұрақ'],['427','Мұражайдың кіреберісі'],['432','Конференц-зал'],['435','Мұражай, 2-қабат']]],
+ ['САРАЙДЫҢ ОРНЫ',[['445','Сарайға апаратын жол'],['449','Жол, 2-бөлік'],['453','Сарай аумағы 1'],['457','Сарай аумағы 2'],['467','Сарайдың орны'],['472','Сарай аумағы 3'],['475','Сарай аумағы 4'],['480','Сарай аумағы 5'],['483','Алып тастар'],['500','Сарай аумағы 6'],['505','Сарай аумағы 7'],['508','Сарай аумағы 8'],['512','Сарай аумағы 9']]],
+ ['ҚАЗБА ЖӘНЕ ТАС АЛЫНҒАН ЖЕР',[['530','Тас алынған жер'],['534','Сарайдың кіреберісі'],['543','Қазба орны 1'],['545','Қазба орны 2'],['557','Казарма 1'],['562','Казарма 2']]]
+];
+let n=0,html='';
+Z.forEach(([zn,items])=>{html+='<div class="zone"><h3>'+zn+'</h3><div class="grid">';
+ items.forEach(([c,t])=>{n++;html+='<a class="place" style="animation-delay:'+(n*35)+'ms" href="'+BASE+c+'" target="akyrtas_tour" rel="noopener"><i>'+n+'</i><span>'+t+'</span><em>↗</em></a>'});
+ html+='</div></div>'});
+document.getElementById('zones').innerHTML=html;
+const show=p=>{document.getElementById('start').style.display=p?'none':'flex';document.getElementById('places').style.display=p?'block':'none';scrollTo(0,0)};
+document.getElementById('goBtn').onclick=()=>show(true);
+document.getElementById('backBtn').onclick=()=>show(false);
+</script>
+</body>
+</html>
