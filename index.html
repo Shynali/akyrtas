@@ -15,6 +15,8 @@ a{color:inherit;text-decoration:none}
 #start h1{font-size:clamp(48px,10vw,110px);font-weight:900;line-height:1}
 #start p{font-size:clamp(20px,3vw,28px);color:var(--soft)}
 .go{margin-top:22px;background:var(--accent);color:var(--dark);border:none;border-radius:999px;padding:20px 64px;font:800 26px 'Segoe UI',Arial,sans-serif;cursor:pointer;animation:pulse 2.2s infinite}
+#start .qr{margin-top:26px;display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--muted);font-size:14px}
+#start .qr img{width:140px;height:140px;border-radius:12px}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(233,135,90,.55)}70%{box-shadow:0 0 0 26px rgba(233,135,90,0)}100%{box-shadow:0 0 0 0 rgba(233,135,90,0)}}
 #tour{display:none;height:100vh;grid-template-columns:300px 1fr;grid-template-rows:auto 1fr}
 header{grid-column:1/-1;display:flex;align-items:center;gap:14px;padding:10px 16px;border-bottom:1px solid var(--line);background:#2A1D17}
@@ -41,6 +43,7 @@ iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
   <h1>Виртуалды саяхат</h1>
   <p>Көне сарайды 360° аралап көріңіз</p>
   <button class="go" id="goBtn">Бастау</button>
+  <div class="qr"><img src="qr.png" alt="Сайттың QR-коды"><span>Телефоннан ашу үшін сканерлеңіз</span></div>
 </section>
 
 <section id="tour">
