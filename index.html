@@ -7,40 +7,37 @@
 <style>
 :root{--dark:#1E1410;--card:#33241D;--light:#F4EDE4;--soft:#D9CBBE;--muted:#A8968A;--accent:#E9875A;--line:rgba(244,237,228,.14)}
 *{box-sizing:border-box;margin:0;padding:0}
-html{background:#1E1410}
-html,body{min-height:100%}
+html{background:var(--dark)}
 body{background:radial-gradient(ellipse at 50% 0%,#3a2519 0%,var(--dark) 60%);background-attachment:fixed;color:var(--light);font-family:'Segoe UI',Arial,sans-serif;min-height:100vh}
 a{color:inherit;text-decoration:none}
-
-/* start screen */
 #start{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;gap:18px}
 #start small{font-size:14px;font-weight:700;letter-spacing:.3em;color:var(--accent)}
 #start h1{font-size:clamp(48px,10vw,110px);font-weight:900;line-height:1}
 #start p{font-size:clamp(20px,3vw,28px);color:var(--soft)}
-.go{margin-top:22px;background:var(--accent);color:var(--dark);border:none;border-radius:999px;padding:20px 64px;font:800 26px 'Segoe UI',Arial,sans-serif;cursor:pointer;box-shadow:0 0 0 0 rgba(233,135,90,.6);animation:pulse 2.2s infinite;transition:transform .2s}
-.go:hover{transform:scale(1.04)}
+.go{margin-top:22px;background:var(--accent);color:var(--dark);border:none;border-radius:999px;padding:20px 64px;font:800 26px 'Segoe UI',Arial,sans-serif;cursor:pointer;animation:pulse 2.2s infinite}
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(233,135,90,.55)}70%{box-shadow:0 0 0 26px rgba(233,135,90,0)}100%{box-shadow:0 0 0 0 rgba(233,135,90,0)}}
-
-/* places screen */
-#places{display:none;max-width:1100px;margin:0 auto;padding:28px 20px 50px}
-.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
-.top h2{font-size:clamp(26px,4vw,38px);font-weight:900}
-.back{border:1px solid rgba(244,237,228,.3);border-radius:999px;padding:9px 18px;font-weight:700;font-size:14px;background:none;color:var(--light);cursor:pointer}
-.hint{color:var(--muted);font-size:15px;margin-bottom:22px}
-.zone{margin-top:26px}
-.zone h3{font-size:13px;font-weight:800;letter-spacing:.2em;color:var(--accent);margin-bottom:12px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
-.place{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;transition:border-color .2s,transform .2s;opacity:0;transform:translateY(12px);animation:in .4s forwards}
-.place:hover{border-color:var(--accent);transform:translateY(-2px)}
-.place i{flex:none;width:38px;height:38px;border-radius:50%;background:rgba(233,135,90,.18);color:var(--accent);display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:800;font-size:15px}
-.place span{font-size:17px;font-weight:700;line-height:1.25}
-.place em{margin-left:auto;font-style:normal;color:var(--muted);font-size:18px}
-@keyframes in{to{opacity:1;transform:none}}
-footer{margin-top:36px;text-align:center;color:var(--muted);font-size:13px}
+#tour{display:none;height:100vh;grid-template-columns:300px 1fr;grid-template-rows:auto 1fr}
+header{grid-column:1/-1;display:flex;align-items:center;gap:14px;padding:10px 16px;border-bottom:1px solid var(--line);background:#2A1D17}
+header .t{flex:1;font-size:20px;font-weight:800}
+header .t small{display:block;font-size:11px;letter-spacing:.2em;color:var(--accent);font-weight:700}
+.btn{border:1px solid rgba(244,237,228,.3);border-radius:999px;padding:8px 16px;font-weight:700;font-size:14px;background:none;color:var(--light);cursor:pointer}
+.btn.main{background:var(--accent);border-color:var(--accent);color:var(--dark)}
+aside{overflow-y:auto;border-right:1px solid var(--line);padding:10px}
+aside h3{font-size:11px;letter-spacing:.2em;color:var(--accent);margin:16px 6px 8px}
+aside h3:first-child{margin-top:4px}
+.it{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:1px solid transparent;color:var(--soft);padding:8px 10px;border-radius:12px;cursor:pointer;font:15px 'Segoe UI',Arial,sans-serif}
+.it:hover{background:rgba(244,237,228,.06);color:var(--light)}
+.it i{font-style:normal;flex:none;width:26px;height:26px;border-radius:50%;background:rgba(244,237,228,.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
+.it.on{background:rgba(233,135,90,.15);border-color:var(--accent);color:var(--light);font-weight:700}
+.it.on i{background:var(--accent);color:var(--dark)}
+main{position:relative;background:#000}
+iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.ext{position:absolute;right:14px;bottom:14px;background:rgba(30,20,16,.9);border:1px solid var(--line);border-radius:999px;padding:9px 16px;font-size:14px;font-weight:700;color:var(--light)}
+.ext:hover{border-color:var(--accent)}
+@media(max-width:800px){#tour{grid-template-columns:1fr;grid-template-rows:auto 34vh 1fr}}
 </style>
 </head>
 <body>
-
 <section id="start">
   <small>АҚЫРТАС</small>
   <h1>Виртуалды саяхат</h1>
@@ -48,28 +45,43 @@ footer{margin-top:36px;text-align:center;color:var(--muted);font-size:13px}
   <button class="go" id="goBtn">Бастау</button>
 </section>
 
-<section id="places">
-  <div class="top"><h2>Орынды таңдаңыз</h2><button class="back" id="backBtn">← Басына</button></div>
-  <p class="hint">Орынды басқанда 360° тур сол жерден ашылады.</p>
-  <div id="zones"></div>
-  <footer>360° тур: «Ежелгі Тараз ескерткіштері» мемлекеттік тарихи-мәдени музей-қорығы</footer>
+<section id="tour">
+  <header>
+    <button class="btn" id="home">←</button>
+    <div class="t"><small id="num"></small><span id="title"></span></div>
+    <button class="btn" id="prev">← Алдыңғы</button>
+    <button class="btn main" id="next">Келесі →</button>
+  </header>
+  <aside id="list"></aside>
+  <main>
+    <iframe id="frame" allowfullscreen allow="fullscreen; gyroscope; accelerometer" title="Ақыртас 360°"></iframe>
+    <a class="ext" id="ext" target="akyrtas_tour" rel="noopener">Ашылмаса: жаңа бетте ашу ↗</a>
+  </main>
 </section>
 
 <script>
-const BASE='https://ezhelgi-taraz.kz/virtual-tours/akirtas/index.html?s=pano';
+const M='https://ezhelgi-taraz.kz/virtual-tours/akirtas/index.html?s=pano';
+const G=(id,lat,lng,h)=>'https://www.google.com/maps/embed?pb=!4v1!6m8!1m7!1s'+id+'!2m2!1d'+lat+'!2d'+lng+'!3f'+h+'!4f0!5f0.78';
 const Z=[
- ['МҰРАЖАЙ',[['425','Тұрақ'],['427','Мұражайдың кіреберісі'],['432','Конференц-зал'],['435','Мұражай, 2-қабат']]],
- ['САРАЙДЫҢ ОРНЫ',[['445','Сарайға апаратын жол'],['449','Жол, 2-бөлік'],['453','Сарай аумағы 1'],['457','Сарай аумағы 2'],['467','Сарайдың орны'],['472','Сарай аумағы 3'],['475','Сарай аумағы 4'],['480','Сарай аумағы 5'],['483','Алып тастар'],['500','Сарай аумағы 6'],['505','Сарай аумағы 7'],['508','Сарай аумағы 8'],['512','Сарай аумағы 9']]],
- ['ҚАЗБА ЖӘНЕ ТАС АЛЫНҒАН ЖЕР',[['530','Тас алынған жер'],['534','Сарайдың кіреберісі'],['543','Қазба орны 1'],['545','Қазба орны 2'],['557','Казарма 1'],['562','Казарма 2']]]
+ ['360° КӨРІНІСТЕР (GOOGLE)',[
+  ['Сарайдың орны',G('CAoSF0NJSE0wb2dLRUlDQWdJRHlxTXlPa2dF',42.9532773,71.8026514,49)],
+  ['Алып тастар мен таулар',G('CAoSFkNJSE0wb2dLRUlDQWdJRGF1b1hkVVE',42.9532533,71.802695,340)],
+  ['Ақыртас жоғарыдан',G('CAoSF0NJSE0wb2dLRUlDQWdJQzAzZHlMMVFF',42.953277,71.8026518,240)]]],
+ ['МҰРАЖАЙ',[['Тұрақ',M+425],['Мұражайдың кіреберісі',M+427],['Конференц-зал',M+432],['Мұражай, 2-қабат',M+435]]],
+ ['САРАЙДЫҢ ОРНЫ',[['Сарайға апаратын жол',M+445],['Жол, 2-бөлік',M+449],['Сарай аумағы 1',M+453],['Сарай аумағы 2',M+457],['Сарайдың орны',M+467],['Сарай аумағы 3',M+472],['Сарай аумағы 4',M+475],['Сарай аумағы 5',M+480],['Алып тастар',M+483],['Сарай аумағы 6',M+500],['Сарай аумағы 7',M+505],['Сарай аумағы 8',M+508],['Сарай аумағы 9',M+512]]],
+ ['ҚАЗБА ЖӘНЕ ТАС АЛЫНҒАН ЖЕР',[['Тас алынған жер',M+530],['Сарайдың кіреберісі',M+534],['Қазба орны 1',M+543],['Қазба орны 2',M+545],['Казарма 1',M+557],['Казарма 2',M+562]]]
 ];
-let n=0,html='';
-Z.forEach(([zn,items])=>{html+='<div class="zone"><h3>'+zn+'</h3><div class="grid">';
- items.forEach(([c,t])=>{n++;html+='<a class="place" style="animation-delay:'+(n*35)+'ms" href="'+BASE+c+'" target="akyrtas_tour" rel="noopener"><i>'+n+'</i><span>'+t+'</span><em>↗</em></a>'});
- html+='</div></div>'});
-document.getElementById('zones').innerHTML=html;
-const show=p=>{document.getElementById('start').style.display=p?'none':'flex';document.getElementById('places').style.display=p?'block':'none';scrollTo(0,0)};
-document.getElementById('goBtn').onclick=()=>show(true);
-document.getElementById('backBtn').onclick=()=>show(false);
+const P=[],$=id=>document.getElementById(id),btns=[];
+Z.forEach(([zn,items])=>{const h=document.createElement('h3');h.textContent=zn;$('list').appendChild(h);
+ items.forEach(([n,u])=>{const i=P.length;P.push({n,u});const b=document.createElement('button');b.className='it';b.innerHTML='<i>'+(i+1)+'</i>'+n;b.onclick=()=>go(i);$('list').appendChild(b);btns.push(b)})});
+let cur=-1;
+function go(i){cur=i;const p=P[i];$('frame').src=p.u;$('ext').href=p.u;$('title').textContent=p.n;$('num').textContent=(i+1)+' / '+P.length;
+ btns.forEach((b,k)=>b.classList.toggle('on',k===i));btns[i].scrollIntoView({block:'nearest'});
+ $('prev').disabled=i===0;$('next').disabled=i===P.length-1}
+$('goBtn').onclick=()=>{$('start').style.display='none';$('tour').style.display='grid';if(cur<0)go(0)};
+$('home').onclick=()=>{$('tour').style.display='none';$('start').style.display='flex'};
+$('prev').onclick=()=>{if(cur>0)go(cur-1)};$('next').onclick=()=>{if(cur<P.length-1)go(cur+1)};
+addEventListener('keydown',e=>{if($('tour').style.display!=='grid')return;if(e.key==='ArrowRight')$('next').click();if(e.key==='ArrowLeft')$('prev').click()});
 </script>
 </body>
 </html>
