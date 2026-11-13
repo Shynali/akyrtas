@@ -84,7 +84,7 @@ function showPano(){
  if(viewer){viewer.destroy();viewer=null}
  viewer=pannellum.viewer('pano',{default:{firstScene:'zal',autoLoad:true,hfov:95,minHfov:40,maxHfov:110,sceneFadeDuration:600},
   scenes:{
-   zal:{type:'cubemap',cubeMap:CM('m435'),yaw:0,minYaw:-80,maxYaw:80,minPitch:-40,maxPitch:40,hotSpots:[HS(-72,-7,'konf','Конференц-залға өту')]},
+   zal:{type:'cubemap',cubeMap:CM('m435'),yaw:-30,minYaw:-80,maxYaw:80,minPitch:-40,maxPitch:40,hotSpots:[HS(-72,-7,'konf','Конференц-залға өту')]},
    konf:{type:'cubemap',cubeMap:CM('m432'),yaw:0,hotSpots:[HS(-34,2,'zal','Мұражай залына өту')]}}})}
 const P=[],$=id=>document.getElementById(id),btns=[];
 Z.forEach(([zn,items])=>{const h=document.createElement('h3');h.textContent=zn;$('list').appendChild(h);
