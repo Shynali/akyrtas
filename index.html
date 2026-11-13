@@ -82,10 +82,10 @@ const HS=(yaw,pitch,scene,t)=>({yaw,pitch,cssClass:'go2',createTooltipFunc:(d,x)
 const CM=d=>[0,1,2,3,4,5].map(n=>d+'/'+n+'.jpg');
 function showPano(){
  if(viewer){viewer.destroy();viewer=null}
- viewer=pannellum.viewer('pano',{default:{firstScene:'zal',autoLoad:true,hfov:95,minHfov:40,maxHfov:110,sceneFadeDuration:600},
+ viewer=pannellum.viewer('pano',{default:{firstScene:'konf',autoLoad:true,hfov:95,minHfov:40,maxHfov:110,sceneFadeDuration:600},
   scenes:{
    zal:{type:'cubemap',cubeMap:CM('m435'),yaw:-30,minYaw:-80,maxYaw:80,minPitch:-40,maxPitch:40,hotSpots:[HS(-72,-7,'konf','Конференц-залға өту')]},
-   konf:{type:'cubemap',cubeMap:CM('m432'),yaw:0,hotSpots:[HS(-34,2,'zal','Мұражай залына өту')]}}})}
+   konf:{type:'cubemap',cubeMap:CM('m432'),yaw:0,hotSpots:[HS(-34,2,'zal','2-қабатқа, мұражай залына өту')]}}})}
 const P=[],$=id=>document.getElementById(id),btns=[];
 Z.forEach(([zn,items])=>{const h=document.createElement('h3');h.textContent=zn;$('list').appendChild(h);
  items.forEach(([n,u])=>{const i=P.length;P.push({n,u});const b=document.createElement('button');b.className='it';b.innerHTML='<i>'+(i+1)+'</i>'+n;b.onclick=()=>go(i);$('list').appendChild(b);btns.push(b);const q=document.createElement('div');q.className='iqr';q.innerHTML='<img src="qr'+(i+1)+'.png" alt="'+n+' QR-коды"><span>Телефоннан ашу</span>';$('list').appendChild(q)})});
