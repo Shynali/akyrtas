@@ -27,8 +27,6 @@ header .t small{display:block;font-size:11px;letter-spacing:.2em;color:var(--acc
 aside{overflow-y:auto;border-right:1px solid var(--line);padding:10px}
 aside h3{font-size:11px;letter-spacing:.2em;color:var(--accent);margin:16px 6px 8px}
 aside h3:first-child{margin-top:4px}
-.iqr{display:flex;align-items:center;gap:12px;margin:4px 6px 14px 46px;color:var(--muted);font-size:12px}
-.iqr img{width:96px;height:96px;border-radius:8px}
 .it{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:1px solid transparent;color:var(--soft);padding:8px 10px;border-radius:12px;cursor:pointer;font:15px 'Segoe UI',Arial,sans-serif}
 .it:hover{background:rgba(244,237,228,.06);color:var(--light)}
 .it i{font-style:normal;flex:none;width:26px;height:26px;border-radius:50%;background:rgba(244,237,228,.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
@@ -88,7 +86,7 @@ function showPano(){
    konf:{type:'cubemap',cubeMap:CM('m432'),yaw:0,hotSpots:[HS(-34,2,'zal','2-қабатқа, мұражай залына өту')]}}})}
 const P=[],$=id=>document.getElementById(id),btns=[];
 Z.forEach(([zn,items])=>{const h=document.createElement('h3');h.textContent=zn;$('list').appendChild(h);
- items.forEach(([n,u])=>{const i=P.length;P.push({n,u});const b=document.createElement('button');b.className='it';b.innerHTML='<i>'+(i+1)+'</i>'+n;b.onclick=()=>go(i);$('list').appendChild(b);btns.push(b);const q=document.createElement('div');q.className='iqr';q.innerHTML='<img src="qr'+(i+1)+'.png" alt="'+n+' QR-коды"><span>Телефоннан ашу</span>';$('list').appendChild(q)})});
+ items.forEach(([n,u])=>{const i=P.length;P.push({n,u});const b=document.createElement('button');b.className='it';b.innerHTML='<i>'+(i+1)+'</i>'+n;b.onclick=()=>go(i);$('list').appendChild(b);btns.push(b)})});
 let cur=-1;
 function go(i){cur=i;const p=P[i];const isP=typeof p.u!=='string';
  $('frame').style.display=isP?'none':'block';$('pano').style.display=isP?'block':'none';$('src').style.display=isP?'block':'none';
