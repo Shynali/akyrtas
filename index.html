@@ -33,8 +33,9 @@ aside h3:first-child{margin-top:4px}
 .it.on{background:rgba(233,135,90,.15);border-color:var(--accent);color:var(--light);font-weight:700}
 .it.on i{background:var(--accent);color:var(--dark)}
 main{position:relative;background:#000}
-iframe,#pano{position:absolute;inset:0;width:100%;height:100%;border:0}
+iframe,#pano,#vid{position:absolute;inset:0;width:100%;height:100%;border:0}
 #pano{display:none}
+#vid{display:none;object-fit:contain;background:#000}
 .go2{width:46px;height:46px;border-radius:50%;background:rgba(233,135,90,.92);border:3px solid #fff;box-shadow:0 0 0 0 rgba(233,135,90,.6);animation:pulse 2s infinite;cursor:pointer}
 .go2:after{content:'↑';display:block;text-align:center;color:#fff;font:900 24px/40px Arial}
 .go2 span{visibility:hidden;position:absolute;bottom:56px;left:50%;transform:translateX(-50%);white-space:nowrap;background:rgba(30,20,16,.9);color:#fff;padding:6px 12px;border-radius:8px;font:700 14px 'Segoe UI',Arial,sans-serif}
@@ -62,6 +63,7 @@ iframe,#pano{position:absolute;inset:0;width:100%;height:100%;border:0}
   <main>
     <iframe id="frame" allowfullscreen allow="fullscreen; gyroscope; accelerometer" title="Ақыртас 360°"></iframe>
     <div id="pano"></div>
+    <video id="vid" controls playsinline preload="metadata"></video>
     <div id="src">Дереккөз: «Ежелгі Тараз» музей-қорығы, рұқсатымен</div>
   </main>
 </section>
@@ -73,7 +75,8 @@ const Z=[
  ['360° КӨРІНІСТЕР',[
   ['Сарайдың орны',G('CAoSF0NJSE0wb2dLRUlDQWdJRHlxTXlPa2dF',42.9532773,71.8026514,49)],
   ['Алып тастар мен таулар',G('CAoSFkNJSE0wb2dLRUlDQWdJRGF1b1hkVVE',42.9532533,71.802695,340)],
-  ['Ақыртас жоғарыдан',G('CAoSF0NJSE0wb2dLRUlDQWdJQzAzZHlMMVFF',42.953277,71.8026518,240)]]]
+  ['Ақыртас жоғарыдан',G('CAoSF0NJSE0wb2dLRUlDQWdJQzAzZHlMMVFF',42.953277,71.8026518,240)]]],
+ ['ЗЕРТТЕУ ЖҰМЫСЫ',[['Оқушы зерттеуі',{video:'video/zertteu.mp4'}]]]
 ];
 let viewer=null;
 const HS=(yaw,pitch,scene,t)=>({yaw,pitch,cssClass:'go2',createTooltipFunc:(d,x)=>{const sp=document.createElement('span');sp.textContent=x;d.appendChild(sp)},createTooltipArgs:t,clickHandlerFunc:()=>viewer.loadScene(scene)});
@@ -88,9 +91,11 @@ const P=[],$=id=>document.getElementById(id),btns=[];
 Z.forEach(([zn,items])=>{const h=document.createElement('h3');h.textContent=zn;$('list').appendChild(h);
  items.forEach(([n,u])=>{const i=P.length;P.push({n,u});const b=document.createElement('button');b.className='it';b.innerHTML='<i>'+(i+1)+'</i>'+n;b.onclick=()=>go(i);$('list').appendChild(b);btns.push(b)})});
 let cur=-1;
-function go(i){cur=i;const p=P[i];const isP=typeof p.u!=='string';
- $('frame').style.display=isP?'none':'block';$('pano').style.display=isP?'block':'none';$('src').style.display=isP?'block':'none';
- if(isP){$('frame').src='about:blank';showPano(p.u)}else{if(viewer){viewer.destroy();viewer=null}$('frame').src=p.u}try{history.replaceState(null,'','#'+(i+1))}catch(e){}$('title').textContent=p.n;$('num').textContent=(i+1)+' / '+P.length;
+function go(i){cur=i;const p=P[i];const isV=typeof p.u==='object'&&!!p.u.video;const isP=typeof p.u!=='string'&&!isV;const v=$('vid');
+ $('frame').style.display=(isP||isV)?'none':'block';$('pano').style.display=isP?'block':'none';$('src').style.display=isP?'block':'none';v.style.display=isV?'block':'none';
+ if(!isV&&v.getAttribute('src')){v.pause();v.removeAttribute('src');v.load()}
+ if(isV){$('frame').src='about:blank';if(viewer){viewer.destroy();viewer=null}if(v.getAttribute('src')!==p.u.video)v.src=p.u.video}
+ else if(isP){$('frame').src='about:blank';showPano(p.u)}else{if(viewer){viewer.destroy();viewer=null}$('frame').src=p.u}try{history.replaceState(null,'','#'+(i+1))}catch(e){}$('title').textContent=p.n;$('num').textContent=(i+1)+' / '+P.length;
  btns.forEach((b,k)=>b.classList.toggle('on',k===i));btns[i].scrollIntoView({block:'nearest'});
  $('prev').disabled=i===0;$('next').disabled=i===P.length-1}
 $('goBtn').onclick=()=>{$('start').style.display='none';$('tour').style.display='grid';if(cur<0)go(0)};
